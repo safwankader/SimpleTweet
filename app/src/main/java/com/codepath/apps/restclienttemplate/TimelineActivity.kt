@@ -53,6 +53,43 @@ class TimelineActivity : AppCompatActivity() {
 
         populateHomeTimeline()
     }
+    // TODO
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    // Handles clicks on menu item
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    if (item.itemId == R.id.compose){
+        // Navigate to compose screen
+        val intent = Intent(this, ComposeActivity::class.java)
+        startActivityForResult(intent,REQUEST_CODE)
+    }
+        return super.onOptionsItemSelected(item)
+    }
+
+    // This method is called when we come back from ComposeActivity
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        // REQUEST_CODE is defined above
+        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE){
+
+            // Get data from our intent( our tweet )
+            val tweet = data?.getParcelableExtra("tweet") as Tweet
+
+            // Update timeline
+            // Modifying the data source of tweets
+            tweets.add(0,tweet)
+
+            // Update adapter
+            adapter.notifyItemInserted(0)
+            rvTweets.smoothScrollToPosition(0)
+
+        }
+
+
+        super.onActivityResult(requestCode, resultCode, data)
+    }
 
     fun populateHomeTimeline(){
         client.getHomeTimeline(object: JsonHttpResponseHandler(){
