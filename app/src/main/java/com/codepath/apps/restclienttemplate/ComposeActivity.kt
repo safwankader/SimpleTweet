@@ -20,7 +20,6 @@ class ComposeActivity : AppCompatActivity() {
     lateinit var etCompose: EditText
     lateinit var btnTweet: Button
 
-
     lateinit var client: TwitterClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
